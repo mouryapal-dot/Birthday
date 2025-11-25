@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Only for you !!!!💖</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Dancing+Script:wght@700&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #ffe6e9; /* Light pink background */
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        /* --- Balloon Animation Styles --- */
+        .balloon {
+            position: absolute;
+            bottom: -100px;
+            width: 50px;
+            height: 70px;
+            background-color: #ff2a2a;
+            border-radius: 50%;
+            opacity: 0.9;
+            animation: floatUp 6s linear forwards;
+            z-index: 10;
+        }
+        .balloon::before {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 40px;
+            background-color: #333;
+        }
+        .pink-balloon {
+            background-color: #ff69b4 !important;
+        }
+
+        @keyframes floatUp {
+            0% { bottom: -100px; transform: translateX(0); }
+            50% { transform: translateX(20px); }
+            100% { bottom: 110vh; transform: translateX(-20px); }
+        }
+
+        /* --- Quiz Container Styles --- */
+        #quiz-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 500px;
+            z-index: 20;
+            display: none; /* Hidden initially */
+            animation: fadeIn 1s ease;
+        }
+
+        h2 {
+            color: #d32f2f;
+            margin-bottom: 20px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        button {
+            padding: 12px;
+            border: 2px solid #ff99a5;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #ff99a5;
+            color: white;
+        }
+
+        .custom-input {
+            display: none;
+            margin-top: 10px;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        /* --- Big Heart Animation --- */
+        #heart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
+            background: rgba(0,0,0,0.3);
+        }
+        
+        .big-heart {
+            font-size: 150px;
+            color: red;
+            animation: heartbeat 1s ease infinite;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- Final Page --- */
+        #final-page {
+            display: none;
+            z-index: 30;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .birthday-msg {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4rem;
+            color: #e91e63;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            animation: popIn 2s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            80% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Pink hearts for final page */
+        .floating-heart {
+            position: absolute;
+            color: #ff69b4;
+            animation: floatUp 5s linear infinite;
+            z-index: 5;
+        }
+
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music"></audio>
+
+    <div id="balloon-container"></div>
+
+    <div id="heart-overlay">
+        <div class="big-heart">♥️</div>
+    </div>
+
+    <div id="quiz-container">
+        
+        <div id="q1" class="question-box">
+            <h2>If we go on a date (if you wish) then where will I go?</h2>
+            <div class="options">
+                <button onclick="checkAnswer(1, 'Kumurtuli', this)">1. Kumurtuli</button>
+                <button onclick="checkAnswer(1, 'Cafe', this)">2. Cafe</button>
+                <button onclick="checkAnswer(1, 'Cinema', this)">3. Cinema</button>
+                <button onclick="checkAnswer(1, 'Music concert', this)">4. Music concert</button>
+            </div>
+        </div>
+
+        <div id="q2" class="question-box" style="display: none;">
+            <h2>The type of song you love to listen</h2>
+            <div class="options">
+                <button onclick="checkAnswer(2, 'Old days', this)">1. Old days</button>
+                <button onclick="checkAnswer(2, 'Romantic old songs', this)">2. Romantic old songs</button>
+                <button onclick="checkAnswer(2, 'Bollywood songs', this)">3. Bollywood songs</button>
+                <button onclick="checkAnswer(2, 'Party song', this)">4. Party song</button>
+            </div>
+        </div>
+
+        <div id="q3" class="question-box" style="display: none;">
+            <h2>My favourite food</h2>
+            <div class="options">
+                <button onclick="checkAnswer(3, 'Biriyani', this)">1. Biriyani</button>
+                <button onclick="checkAnswer(3, 'Polau', this)">2. Polau</button>
+                <button onclick="checkAnswer(3, 'Momo', this)">3. Momo</button>
+                <button onclick="checkAnswer(3, 'Chinese', this)">4. Chinese</button>
+            </div>
+        </div>
+
+        <div id="q4" class="question-box" style="display: none;">
+            <h2>Will you be my love?</h2>
+            <div class="options">
+                <button onclick="handleFinalAnswer('Yes')">1. Yes</button>
+                <button onclick="handleFinalAnswer('No')">2. No</button>
+                <button onclick="showCustomInput()">3. What you want to say</button>
+            </div>
+            <div id="custom-box" class="custom-input">
+                <input type="text" id="custom-text" placeholder="Write your feelings here...">
+                <button onclick="submitCustom()">Send Answer</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="final-page">
+        <h1 class="birthday-msg">Happy Birthday Ahona ♥️♥️🎂🎂</h1>
+    </div>
+
+    <script>
+        // --- CONFIGURATION ---
+        // ENTER YOUR EMAIL HERE TO RECEIVE THE ANSWER
+        const myEmail = "mouryapal408@gmail.com"; 
+        
+        // --- BALLOON LOGIC ---
+        function createBalloons(colorClass = 'balloon', count = 30) {
+            const container = document.body;
+            for (let i = 0; i < count; i++) {
+                const b = document.createElement('div');
+                b.classList.add(colorClass);
+                b.style.left = Math.random() * 100 + 'vw';
+                b.style.animationDuration = (Math.random() * 3 + 4) + 's'; // 4-7 seconds
+                b.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(b);
+                
+                // Remove balloon after animation to clean DOM
+                setTimeout(() => {
+                    b.remove();
+                }, 8000);
+            }
+        }
+
+        // Start initial red balloons
+        createBalloons('balloon', 50);  
+        // Show Quiz after balloons start clearing (4 seconds)
+        setTimeout(() => {
+            document.getElementById('quiz-container').style.display = 'block';
+        }, 4000);
+
+        // --- QUIZ LOGIC ---
+        function showHeartAndNext(nextQId) {
+            // Show Big Heart
+            const overlay = document.getElementById('heart-overlay');
+            overlay.style.display = 'flex';
+            
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                // Hide current, show next
+                const current = document.querySelector('.question-box:not([style*="display: none"])');
+                current.style.display = 'none';
+                
+                if(nextQId) {
+                    document.getElementById(nextQId).style.display = 'block';
+                }
+            }, 1500); // Heart shows for 1.5 seconds
+        }
+
+        function checkAnswer(qNum, answer, btnElement) {
+            let correct = false;
+            
+            if (qNum === 1 && answer === 'Kumurtuli') correct = true;
+            if (qNum === 2 && answer === 'Romantic old songs') correct = true;
+            if (qNum === 3 && answer === 'Biriyani') correct = true;
+
+            if (correct) {
+                btnElement.style.backgroundColor = '#4CAF50'; // Green for correct
+                btnElement.style.color = 'white';
+                
+                let nextQ = '';
+                if(qNum === 1) nextQ = 'q2';
+                if(qNum === 2) nextQ = 'q3';
+                if(qNum === 3) nextQ = 'q4';
+
+                showHeartAndNext(nextQ);
+            } else {
+                btnElement.style.backgroundColor = '#f44336'; // Red for wrong
+                btnElement.style.color = 'white';
+                btnElement.innerHTML += " ❌ Try Again";
+                setTimeout(() => {
+                    btnElement.style.backgroundColor = 'white';
+                    btnElement.style.color = 'black';
+                    btnElement.innerHTML = btnElement.innerHTML.replace(" ❌ Try Again", "");
+                }, 1000);
+            }
+        }
+
+        // --- Q4 LOGIC ---
+        function showCustomInput() {
+            document.getElementById('custom-box').style.display = 'block';
+        }
+
+        function submitCustom() {
+            const text = document.getElementById('custom-text').value;
+            if(text.trim() === "") {
+                alert("Please write something!");
+                return;
+            }
+            handleFinalAnswer(text);
+        }
+
+        function handleFinalAnswer(response) {
+            // 1. Send Email (Mailto trick)
+            const subject = "Ahona's Birthday Quiz Response!";
+            const body = `She chose option: ${response}`;
+            window.location.href = `mailto:${myEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+            // 2. Transition to Final Page
+            document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById('final-page').style.display = 'flex';
+            
+            // Start Pink Hearts and Balloons
+            startFinalCelebration();
+        }
+
+        // --- FINAL PAGE ANIMATIONS ---
+        function startFinalCelebration() {
+            // Pink Balloons
+            setInterval(() => {
+                const b = document.createElement('div');
+                b.classList.add('balloon', 'pink-balloon');
+                b.style.left = Math.random() * 100 + 'vw';
+                b.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                document.body.appendChild(b);
+                setTimeout(() => b.remove(), 7000);
+            }, 300);
+
+            // Floating Hearts
+            setInterval(() => {
+                const h = document.createElement('div');
+                h.classList.add('floating-heart');
+                h.innerHTML = '♥️';
+                h.style.left = Math.random() * 100 + 'vw';
+                h.style.fontSize = (Math.random() * 30 + 20) + 'px';
+                h.style.animationDuration = (Math.random() * 3 + 3) +'s';
+                h.style.bottom = '-50px';
+                document.body.appendChild(h);
+                setTimeout(() => h.remove(), 6000);
+            }, 200);
+        }
+
+    </script>
+</body>
+</html>
